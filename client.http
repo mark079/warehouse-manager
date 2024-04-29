@@ -1,0 +1,24 @@
+GET http://localhost:3000 HTTP/1.1
+###
+GET http://localhost:3000/categories HTTP/1.1
+###
+GET http://localhost:3000/categories/5 HTTP/1.1
+###
+POST http://localhost:3000/categories HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Expediente",
+    "description": "Produtos de Expediente..."
+}
+
+###
+PUT http://localhost:3000/categories/4 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Teste",
+    "description": "Produtos de Teste..."
+}
+###
+DELETE http://localhost:3000/categories/4 HTTP/1.1
