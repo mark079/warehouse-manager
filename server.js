@@ -1,10 +1,12 @@
 import express from 'express';
 import { connectDatabase } from './src/db/db.js';
 import categoryController from './src/controllers/categoryController.js';
+import receiverController from './src/controllers/receiverController.js';
 const app = express();
 const PORT = 3000;
 app.use(express.json());
 app.use('/categories', categoryController);
+app.use('/receivers', receiverController);
 connectDatabase()
     .then(() => {
         // routes

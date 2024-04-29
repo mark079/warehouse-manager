@@ -11,9 +11,8 @@ content-type: application/json
     "name": "Expediente",
     "description": "Produtos de Expediente..."
 }
-
 ###
-PUT http://localhost:3000/categories/4 HTTP/1.1
+PUT http://localhost:3000/categories/1 HTTP/1.1
 content-type: application/json
 
 {
@@ -22,3 +21,23 @@ content-type: application/json
 }
 ###
 DELETE http://localhost:3000/categories/4 HTTP/1.1
+###
+GET http://localhost:3000/receivers HTTP/1.1
+###
+GET http://localhost:3000/receivers/1 HTTP/1.1
+###
+POST http://localhost:3000/receivers HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Agricultura"
+    # "description": "Tal"
+}
+###
+PUT http://localhost:3000/receivers/3 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Agricultura",
+    "description": "asdf"
+}
