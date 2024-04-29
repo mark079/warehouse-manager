@@ -31,27 +31,22 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-
     const { name, description } = req.body;
-    const errors = [];
+    const db = await connectDatabase();
+    const errors = {};
     if (!name) {
-        errors.push("Nome é um campo obrigatório");
+        errors.name = "Nome é um campo obrigatório";
     }
-    if (!description) {
-        errors.push("Descrição é um campo obrigatório");
-    }
-    if (errors.length >= 1) {
+    if (Object.keys(errors).length > 0) {
         return res.status(400).json({ errors });
     }
-    const db = await connectDatabase();
     try {
-        // Inserindo os dados no banco de dados
-        const result = await db.run("INSERT INTO categories (name, description) VALUES (?, ?)", [name, description]);
+        const result = await db.run(`INSERT INTO categories (name${description ? ', description' : ''}) VALUES (${"'" + name + "'"}${description ? ", '" + description + "'" : ''});`);
         return res.json({ message: 'Categoria adicionada com sucesso', ID: result.lastID });
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message })
     } finally {
-        await db.close();
+        db.close();
     }
 });
 
@@ -68,14 +63,12 @@ router.put('/:id', async (req, res) => {
         if (!name) {
             errors.name = ["Nome é um campo obrigatório"];
         }
-        if (!description) {
-            errors.description = ["Descrição é um campo obrigatório"];
-        }
 
         if (Object.keys(errors).length > 0) {
             return res.status(400).json({ errors });
         }
-        await db.run("UPDATE categories SET name = ?, description = ? WHERE id = ?", [name, description, id]);
+
+        await db.run(`UPDATE categories SET name = ${"'" + name + "'"}${description ? ', description = ' + "'" + description + "'" : ''} WHERE id = ${id} AND flagN = 1;`);
 
         return res.json({ message: 'Categoria atualizada com sucesso' });
     } catch (error) {
