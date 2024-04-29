@@ -6,9 +6,9 @@ router.get('/', async (req, res) => {
     const db = await connectDatabase();
     try {
         const rows = await db.all("SELECT * FROM categories where flagN = 1");
-        res.json(rows);
+        return res.json(rows);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     } finally {
         await db.close();
     }
@@ -19,12 +19,12 @@ router.get('/:id', async (req, res) => {
     const db = await connectDatabase();
     try {
         const category = await db.get("SELECT * FROM categories WHERE id = ? AND flagN = 1", [id]);
-        if(!category) {
-            res.status(404).json({error: "Categoria não encontrada!"});
+        if (!category) {
+            return res.status(404).json({ error: "Categoria não encontrada!" });
         }
-        res.json(category);
+        return res.json(category);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     } finally {
         await db.close();
     }
@@ -47,9 +47,9 @@ router.post('/', async (req, res) => {
     try {
         // Inserindo os dados no banco de dados
         const result = await db.run("INSERT INTO categories (name, description) VALUES (?, ?)", [name, description]);
-        res.json({ message: 'Categoria adicionada com sucesso', ID: result.lastID });
+        return res.json({ message: 'Categoria adicionada com sucesso', ID: result.lastID });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     } finally {
         await db.close();
     }
@@ -77,9 +77,9 @@ router.put('/:id', async (req, res) => {
         }
         await db.run("UPDATE categories SET name = ?, description = ? WHERE id = ?", [name, description, id]);
 
-        res.json({ message: 'Categoria atualizada com sucesso' });
+        return res.json({ message: 'Categoria atualizada com sucesso' });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     } finally {
         await db.close();
     }
@@ -90,9 +90,9 @@ router.delete('/:id', async (req, res) => {
     const db = await connectDatabase();
     try {
         await db.run("UPDATE categories SET flagN = 0 WHERE id = ?", [id]);
-        res.json({ message: 'Categoria removida com sucesso' });
+        return res.json({ message: 'Categoria removida com sucesso' });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 });
 
