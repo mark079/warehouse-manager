@@ -4,7 +4,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     const db = await connectDatabase();
     try {
-        const receivers = await db.all("SELECT * FROM receivers;");
+        const receivers = await db.all("SELECT * FROM receivers WHERE flagN = 1;");
         return res.json(receivers);
     } catch (error) {
         return res.status(500).json({ error: error });
