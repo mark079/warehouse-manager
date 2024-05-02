@@ -55,7 +55,7 @@ router.put('/:id', async (req, res) => {
     const { name, description } = req.body;
     const db = await connectDatabase();
     try {
-        const existingCategory = await db.get("SELECT * FROM categories WHERE id = ? AND flagN = ?", [id, 1]);
+        const existingCategory = await db.get(`SELECT * FROM categories WHERE ${id} = ? AND flagN = 1`);
         if (!existingCategory) {
             return res.status(404).json({ error: 'Categoria não encontrada.' });
         }
@@ -68,7 +68,7 @@ router.put('/:id', async (req, res) => {
             return res.status(400).json({ errors });
         }
 
-        await db.run(`UPDATE categories SET name = ${"'" + name + "'"}${description ? ', description = ' + "'" + description + "'" : ''} WHERE id = ${id} AND flagN = 1;`);
+        await db.run(`UPDATE categories SET name = '${name}', description = '${description}' WHERE id = ${id} AND flagN = 1;`);
 
         return res.json({ message: 'Categoria atualizada com sucesso' });
     } catch (error) {
