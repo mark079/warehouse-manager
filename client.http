@@ -41,3 +41,28 @@ content-type: application/json
     "name": "Agricultura",
     "description": "asdf"
 }
+###
+GET http://localhost:3000/products HTTP/1.1
+###
+POST http://localhost:3000/products HTTP/1.1
+content-type: application/json
+
+{
+    "categoryId": 1,
+    "name": "Caneta azul",
+    "quantity": 5
+}
+###
+GET http://localhost:3000/products/1 HTTP/1.1
+###
+PUT http://localhost:3000/products/1 HTTP/1.1
+content-type: application/json
+
+{
+    "categoryId": 2,
+    "name": "Caneta verde",
+    "description": "Descrição",
+    "quantity": 7
+}
+###
+DELETE http://localhost:3000/products/1 HTTP/1.1
