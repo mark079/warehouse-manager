@@ -18,7 +18,7 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const db = await connectDatabase();
     try {
-        const category = await db.get("SELECT * FROM categories WHERE id = ? AND flagN = 1", [id]);
+        const category = await db.get(`SELECT * FROM categories WHERE id = ${id} AND flagN = 1;`);
         if (!category) {
             return res.status(404).json({ error: "Categoria não encontrada!" });
         }
@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
         return res.status(400).json({ errors });
     }
     try {
-        const result = await db.run(`INSERT INTO categories (name${description ? ', description' : ''}) VALUES (${"'" + name + "'"}${description ? ", '" + description + "'" : ''});`);
+        const result = await db.run(`INSERT INTO categories (name, description) VALUES ('${name}', '${description || ''}');`);
         return res.json({ message: 'Categoria adicionada com sucesso', ID: result.lastID });
     } catch (error) {
         return res.status(500).json({ error: error.message })

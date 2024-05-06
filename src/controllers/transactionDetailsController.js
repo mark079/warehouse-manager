@@ -16,7 +16,7 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const db = await connectDatabase();
     try {
-        const transactionDetail = await db.get("SELECT * FROM transaction_details WHERE id = ? AND flagN = 1", [id]);
+        const transactionDetail = await db.get(`SELECT * FROM transaction_details WHERE id = ${id} AND flagN = 1;`);
         if (!transactionDetail) {
             return res.status(404).json({ error: "Transação detalhada não encontrada!" });
         }

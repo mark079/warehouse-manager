@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
         return res.status(400).json({ errors });
     }
     try {
-        const result = await db.run(`INSERT INTO receivers (name${description ? ', description' : ''}) VALUES (${"'" + name + "'"}${description ? ", '" + description + "'" : ''});`);
+        const result = await db.run(`INSERT INTO receivers (name, description) VALUES ('${name}', '${description || ""}');`);
         return res.json({ message: 'Recebedor adicionado com sucesso', ID: result.lastID });
     } catch (error) {
         return res.status(500).json({ error: error.message })
@@ -54,7 +54,7 @@ router.put('/:id', async (req, res) => {
     const { name, description } = req.body;
     const db = await connectDatabase();
     try {
-        const existingReceiver = await db.get("SELECT * FROM receivers WHERE id = ? AND flagN = ?", [id, 1]);
+        const existingReceiver = await db.get(`SELECT * FROM receivers WHERE id = ${id} AND flagN = 1`);
         if (!existingReceiver) {
             return res.status(404).json({ error: 'Recebedor não encontrado.' });
         }
@@ -67,7 +67,7 @@ router.put('/:id', async (req, res) => {
             return res.status(400).json({ errors });
         }
 
-        await db.run(`UPDATE receivers SET name = ${"'" + name + "'"}${description ? ', description = ' + "'" + description + "'" : ''} WHERE id = ${id} AND flagN = 1;`);
+        await db.run(`UPDATE receivers SET name = '${name}', description = '${description}' WHERE id = ${id} AND flagN = 1;`);
 
         return res.json({ message: 'Recebedor atualizado com sucesso' });
     } catch (error) {
@@ -85,7 +85,7 @@ router.delete('/:id', async (req, res) => {
         if (!existingReceiver) {
             return res.status(400).json({ error: "Recebedor não encontrado" });
         }
-        await db.run("UPDATE receivers SET flagN = 0 WHERE id = ?", [id]);
+        await db.run(`UPDATE receivers SET flagN = 0 WHERE id = ${id};`);
         return res.json({ message: 'Recebedor removida com sucesso' });
     } catch (error) {
         return res.status(500).json({ error: error.message });

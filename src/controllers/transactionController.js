@@ -18,7 +18,7 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const db = await connectDatabase();
     try {
-        const transaction = await db.get("SELECT * FROM transactions WHERE id = ? AND flagN = 1", [id]);
+        const transaction = await db.get(`SELECT * FROM transactions WHERE id = ${id} AND flagN = 1;`);
         if (!transaction) {
             return res.status(404).json({ error: "Transação não encontrada!" });
         }
@@ -77,6 +77,10 @@ router.put('/:id', async (req, res) => {
                 errors.type = "Tipo inválido";
             }
 
+        }
+        const transactionExist = await db.get(`SELECT * FROM transactions WHERE id = ${id} AND flagN = 1;`);
+        if (!transactionExist) {
+            errors.transactionId = 'Transação não encontrada';
         }
         if (!receiverId) {
             errors.receiverId = 'Recebedor é um campo obrigatório';

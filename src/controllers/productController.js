@@ -18,7 +18,7 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const db = await connectDatabase();
     try {
-        const product = await db.get("SELECT * FROM products WHERE id = ? AND flagN = 1", [id]);
+        const product = await db.get(`SELECT * FROM products WHERE id = ${id} AND flagN = 1;`);
         if (!product) {
             return res.status(404).json({ error: "Produto não encontrado!" });
         }
@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
         if (Object.keys(errors).length > 0) {
             return res.status(400).json({ errors });
         }
-        const result = await db.run(`INSERT INTO products (name, description, quantity, categoryId) VALUES ('${name}', ${description || "''"}, ${quantity}, ${categoryId});`);
+        const result = await db.run(`INSERT INTO products (name, description, quantity, categoryId) VALUES ('${name}', '${description || ''}', ${quantity}, ${categoryId});`);
         return res.json({ message: 'Produto adicionado com sucesso', ID: result.lastID });
     } catch (error) {
         return res.status(500).json({ error: error.message })
@@ -106,7 +106,7 @@ router.delete('/:id', async (req, res) => {
         if (!existingProduct) {
             return res.status(400).json({ error: "Produto não encontrado" });
         }
-        await db.run("UPDATE products SET flagN = 0 WHERE id = ?", [id]);
+        await db.run(`UPDATE products SET flagN = 0 WHERE id = ${id}`);
         return res.json({ message: 'Produto removido com sucesso' });
     } catch (error) {
         return res.status(500).json({ error: error.message });

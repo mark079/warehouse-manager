@@ -34,13 +34,15 @@ content-type: application/json
     # "description": "Tal"
 }
 ###
-PUT http://localhost:3000/receivers/3 HTTP/1.1
+PUT http://localhost:3000/receivers/2 HTTP/1.1
 content-type: application/json
 
 {
     "name": "Agricultura",
     "description": "asdf"
 }
+###
+DELETE http://localhost:3000/receivers/1 HTTP/1.1
 ###
 GET http://localhost:3000/products HTTP/1.1
 ###
@@ -49,7 +51,7 @@ content-type: application/json
 
 {
     "categoryId": 2,
-    "name": "Caneta azul",
+    "name": "Caneta vermelha",
     "quantity": 5
 }
 ###
@@ -76,17 +78,17 @@ content-type: application/json
 
 {
     "type": "entry",
-    "receiverId": 1,
+    "receiverId": 2,
     "letter": "45",
     "observation": "Deu certo"
 }
 ###
-PUT http://localhost:3000/transictions/2 HTTP/1.1
+PUT http://localhost:3000/transictions/4 HTTP/1.1
 content-type: application/json
 
 {
     "type": "exit",
-    "receiverId": 1,
+    "receiverId": 2,
     "letter": "78",
     "observation": "Será que vai?"
 }
