@@ -102,6 +102,10 @@ router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     const db = await connectDatabase();
     try {
+        const existingProduct = await db.get(`SELECT * FROM products WHERE id = ${id} AND flagN = 1;`);
+        if (!existingProduct) {
+            return res.status(400).json({ error: "Produto não encontrado" });
+        }
         await db.run("UPDATE products SET flagN = 0 WHERE id = ?", [id]);
         return res.json({ message: 'Produto removido com sucesso' });
     } catch (error) {

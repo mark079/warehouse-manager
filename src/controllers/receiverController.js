@@ -19,7 +19,7 @@ router.get('/:id', async (req, res) => {
     try {
         const receiver = await db.get("SELECT * FROM receivers WHERE id = ? AND flagN = 1", [id]);
         if (!receiver) {
-            return res.status(404).json({ error: "Recebedor não encontrada!" });
+            return res.status(404).json({ error: "Recebedor não encontrado!" });
         }
         return res.json(receiver);
     } catch (error) {
@@ -81,6 +81,10 @@ router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     const db = await connectDatabase();
     try {
+        const existingReceiver = await db.get(`SELECT * FROM receivers WHERE id = ${id} AND flagN = 1;`);
+        if (!existingReceiver) {
+            return res.status(400).json({ error: "Recebedor não encontrado" });
+        }
         await db.run("UPDATE receivers SET flagN = 0 WHERE id = ?", [id]);
         return res.json({ message: 'Recebedor removida com sucesso' });
     } catch (error) {

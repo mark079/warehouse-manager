@@ -55,7 +55,7 @@ router.put('/:id', async (req, res) => {
     const { name, description } = req.body;
     const db = await connectDatabase();
     try {
-        const existingCategory = await db.get(`SELECT * FROM categories WHERE ${id} = ? AND flagN = 1`);
+        const existingCategory = await db.get(`SELECT * FROM categories WHERE id = ${id} AND flagN = 1`);
         if (!existingCategory) {
             return res.status(404).json({ error: 'Categoria não encontrada.' });
         }
@@ -82,6 +82,10 @@ router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     const db = await connectDatabase();
     try {
+        const existingCategory = await db.get(`SELECT * FROM categories WHERE id = ${id} AND flagN = 1;`);
+        if (!existingCategory) {
+            return res.status(400).json({ error: "Categoria não encontrada" });
+        }
         await db.run("UPDATE categories SET flagN = 0 WHERE id = ?", [id]);
         return res.json({ message: 'Categoria removida com sucesso' });
     } catch (error) {
