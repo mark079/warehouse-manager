@@ -2,7 +2,7 @@ GET http://localhost:3000 HTTP/1.1
 ###
 GET http://localhost:3000/categories HTTP/1.1
 ###
-GET http://localhost:3000/categories/5 HTTP/1.1
+GET http://localhost:3000/categories/1 HTTP/1.1
 ###
 POST http://localhost:3000/categories HTTP/1.1
 content-type: application/json
@@ -20,7 +20,7 @@ content-type: application/json
     "description": "Produtos de Teste..."
 }
 ###
-DELETE http://localhost:3000/categories/4 HTTP/1.1
+DELETE http://localhost:3000/categories/1 HTTP/1.1
 ###
 GET http://localhost:3000/receivers HTTP/1.1
 ###
@@ -65,4 +65,30 @@ content-type: application/json
     "quantity": 7
 }
 ###
-DELETE http://localhost:3000/products/1 HTTP/1.1
+DELETE http://localhost:3000/products/2 HTTP/1.1
+###
+GET http://localhost:3000/transictions HTTP/1.1
+###
+GET http://localhost:3000/transictions/2 HTTP/1.1
+###
+POST http://localhost:3000/transictions HTTP/1.1
+content-type: application/json
+
+{
+    "type": "entry",
+    "receiverId": 1,
+    "letter": "45",
+    "observation": "Deu certo"
+}
+###
+PUT http://localhost:3000/transictions/2 HTTP/1.1
+content-type: application/json
+
+{
+    "type": "exit",
+    "receiverId": 1,
+    "letter": "78",
+    "observation": "Será que vai?"
+}
+###
+DELETE http://localhost:3000/transictions/3 HTTP/1.1
