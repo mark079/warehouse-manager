@@ -48,7 +48,7 @@ POST http://localhost:3000/products HTTP/1.1
 content-type: application/json
 
 {
-    "categoryId": 1,
+    "categoryId": 2,
     "name": "Caneta azul",
     "quantity": 5
 }
@@ -92,3 +92,26 @@ content-type: application/json
 }
 ###
 DELETE http://localhost:3000/transictions/3 HTTP/1.1
+###
+GET http://localhost:3000/transictions_details/ HTTP/1.1
+###
+GET http://localhost:3000/transictions_details/2 HTTP/1.1
+###
+POST http://localhost:3000/transictions_details HTTP/1.1
+content-type: application/json
+
+{
+    "productId": 1,
+    "transactionId": 3,
+    "quantity": 4
+}
+###
+PUT http://localhost:3000/transictions_details/1 HTTP/1.1
+content-type: application/json
+
+{
+    "quantity": 1,
+    "transactionId": 3,
+    "productId": 1
+}
+
